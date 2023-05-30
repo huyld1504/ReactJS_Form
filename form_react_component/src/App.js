@@ -1,11 +1,12 @@
 import logo from './logo.svg';
 import './App.css';
-import {Router,routes} from 'react-router'
+import {RouterBrowser,Router,routes} from 'react-router'
+import Management from './Form/Management';
 function App() {
   return (
-    <Router>
-      
-    </Router>
+    <div>
+      <Management/>
+    </div>
   );
 }
 

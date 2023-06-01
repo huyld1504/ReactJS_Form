@@ -9,11 +9,12 @@ export default class FormManagement extends Component {
       phone: "",
     },
     validError: {
-      id: "",
-      name: "",
-      email: "",
-      phone: "",
+      id: "*",
+      name: "*",
+      email: "*",
+      phone: "*",
     },
+    inValid: true
   };
 
   takeInput = (event) => {
@@ -23,33 +24,51 @@ export default class FormManagement extends Component {
     newValidConfirm[id] = value;
     //Check validation
     let notice = ''
-    if (value.trim()==='') {
+    if (value.trim() ==='') {
       notice = 'Not be blank !'
     }
     let regexID = /^\d+$/  
     let regexLength =/^.{5,10}$/gm
     let regexEmail = /\S+@\S+\.\S+/
     let regexPhone = /(84|0[3|5|7|8|9])+([0-9]{8})\b/ 
-    let regexName =  /[^0-9]/
+    let regexName =  /^[a-zA-Z]+$/
     if (!regexID.test(newValidConfirm.id) & !regexLength.test(newValidConfirm.id) & !regexEmail.test(newValidConfirm.email) & !regexPhone.test(newValidConfirm.phone) & !regexName.test(newValidConfirm.name))  {
       notice = 'Not valid !'
     } 
     
-    
     let newValidError = {...this.state.validError}
     newValidError[id] = notice
+
+    //Check valid form
+    let res = this.checkInValidForm(newValidError)
+
     this.setState({
       validConfirm: newValidConfirm,
-      validError: newValidError
+      validError: newValidError,
+      inValid: res
     })
   };
 
   //Prevent reload form => save data
   preventReloadForm = (event) => {
     event.preventDefault()
+    let {addStudent} = this.props
+    addStudent(this.state.validConfirm)
+  }
+
+  checkInValidForm = (errors) => {
+    let output = false
+    for (let key in errors) {
+      if(errors[key] !== '') {
+        output = true
+        break
+      }
+    }
+    return output
   }
 
   render() {
+    //const {id,name,email,phone} = this.state.validConfirm
     return (
       <div className="container">
         <br />
@@ -135,10 +154,10 @@ export default class FormManagement extends Component {
             </article>
           </main>
           <main className="card-footer">
-            <button className="btn btn-success mx-3" type="submit">
+            <button className="btn btn-success mx-3" type="submit" disabled={this.state.inValid}>
               <i className="fa fa-add"></i> Add
             </button>
-            <button className="btn btn-primary mx-3">
+            <button className="btn btn-primary mx-3" >
               <i className="fa fa-edit"></i> Edit
             </button>
           </main>

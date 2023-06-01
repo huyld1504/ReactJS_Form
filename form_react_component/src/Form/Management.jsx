@@ -23,6 +23,7 @@ export default class Management extends Component {
                     <th>NAME</th>
                     <th>EMAIL</th>
                     <th>PHONE NUMBER</th>
+                    <th>FEATURE</th>
                   </thead>
                   <br />
                   <tbody>
